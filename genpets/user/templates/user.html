@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>GenPets</title>
+</head>
+<style>
+    h1{
+        text-align: center;
+    }
+    .navbar{
+       display: flex;
+       justify-content: center;
+       list-style-type: none;
+       gap: 20px;
+       padding: 0;
+       margin: 20px 0;
+       margin-top: 39px;
+       background-color: #d3e4d6;
+    }
+    .navbar li {
+        display: inline-block;
+    }
+    .navbar a{
+        text-decoration: none;
+        font-size: 18px;
+        color: black;
+    }
+    .navbar a:hover{
+        color: #007BFF;
+    }
+    img{
+        margin-left: -8px;
+    }
+</style>
+<body>
+    <h1>Genrenciador de PetShop</h1>
+    <div class="navbar">
+        <li><a href="#">Ganho</a></li> <!-- Para cadastrar a compra de alguma coisa ou quanto foi o banho de algum pet -->
+        <li><a href="#">Faturamento</a></li> <!-- mostrar o faturamento mensal  -->
+        <li><a href="#">Pet</a></li> <!-- cadastrar os pets -->
+    </div>
+    <div>
+        <img src="{% static 'img/beaglepet.avif' %}" alt="Imagem de um Beagle"> 
+    </div>
+</body>
+</html>
