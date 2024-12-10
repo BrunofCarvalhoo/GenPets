@@ -6,7 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ganhos</title>
 </head>
+<style>
+    h1{
+        text-align: center;
+    }
+    .navbar{
+       display: flex;
+       justify-content: center;
+       list-style-type: none;
+       gap: 20px;
+       padding: 0;
+       margin: 20px 0;
+       margin-top: 39px;
+       background-color: #d3e4d6;
+    }
+    .navbar li {
+        display: inline-block;
+    }
+    .navbar a{
+        text-decoration: none;
+        font-size: 18px;
+        color: black;
+    }
+    .navbar a:hover{
+        color: #007BFF;
+    }
+</style>
 <body>
     <h1>Ganhos</h1>
+    <div class="navbar">
+        <li><a href="{% url 'user' %}">Home</a></li>
+        <li><a href="{% url 'ganho' %}">Ganho</a></li> <!-- Para cadastrar a compra de alguma coisa ou quanto foi o banho de algum pet -->
+        <li><a href="#">Faturamento</a></li> <!-- mostrar o faturamento mensal  -->
+        <li><a href="#">Pet</a></li> <!-- cadastrar os pets -->
+    </div>
+   
 </body>
 </html>
