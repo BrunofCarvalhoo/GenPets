@@ -1,45 +1,62 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ganhos</title>
-</head>
-<style>
-    h1{
-        text-align: center;
-    }
-    .navbar{
-       display: flex;
-       justify-content: center;
-       list-style-type: none;
-       gap: 20px;
-       padding: 0;
-       margin: 20px 0;
-       margin-top: 39px;
-       background-color: #d3e4d6;
-    }
-    .navbar li {
-        display: inline-block;
-    }
-    .navbar a{
-        text-decoration: none;
-        font-size: 18px;
-        color: black;
-    }
-    .navbar a:hover{
-        color: #007BFF;
-    }
-</style>
-<body>
-    <h1>Ganhos</h1>
-    <div class="navbar">
-        <li><a href="{% url 'user' %}">Home</a></li>
-        <li><a href="{% url 'ganho' %}">Ganho</a></li> <!-- Para cadastrar a compra de alguma coisa ou quanto foi o banho de algum pet -->
-        <li><a href="#">Faturamento</a></li> <!-- mostrar o faturamento mensal  -->
-        <li><a href="#">Pet</a></li> <!-- cadastrar os pets -->
-    </div>
-   
-</body>
-</html>
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ganhos</title>
+    </head>
+    <style>
+        h1{
+            text-align: center;
+        }
+        .navbar{
+        display: flex;
+        justify-content: center;
+        list-style-type: none;
+        gap: 20px;
+        padding: 0;
+        margin: 20px 0;
+        margin-top: 39px;
+        background-color: #d3e4d6;
+        }
+        .navbar li {
+            display: inline-block;
+        }
+        .navbar a{
+            text-decoration: none;
+            font-size: 18px;
+            color: black;
+        }
+        .navbar a:hover{
+            color: #007BFF;
+        }
+    </style>
+    <body>
+        <h1>Ganhos</h1>
+        <div class="navbar">
+            <li><a href="{% url 'user' %}">Home</a></li>
+            <li><a href="{% url 'ganho' %}">Ganho</a></li> <!-- Para cadastrar a compra de alguma coisa ou quanto foi o banho de algum pet -->
+            <li><a href="#">Faturamento</a></li> <!-- mostrar o faturamento mensal  -->
+            <li><a href="#">Pet</a></li> <!-- cadastrar os pets -->
+        </div>
+        <div style="text-align: right; margin: 10px;">
+            <a href="{% url 'cadastrar_animal' %}" style="padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Adicionar Novo</a>
+        </div>
+        <div>
+            {% for animal in animais %}
+                <div style="border: 1px solid #ccc; padding: 10px; margin: 10px;">
+                    <h2>{{ animal.nome }}</h2>
+                    <p><strong>Número:</strong> {{ animal.numero }}</p>
+                    <p><strong>Data de Nascimento:</strong> {{ animal.data_nascimento }}</p>
+                    <p><strong>Gênero:</strong> {{ animal.genero }}</p>
+                    <p><strong>Vacinas:</strong> {{ animal.vacinas }}</p>
+                </div>
+            {% empty %}
+                <p>Nenhum animal cadastrado ainda.</p>
+            {% endfor %}
+        </div>
+        
+    
+    </body>
+    </html>
