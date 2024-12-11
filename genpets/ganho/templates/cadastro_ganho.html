@@ -4,46 +4,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Animal</title>
-</head>
-<script>
-    function formatPhoneNumber(input) {
-        // Remove todos os caracteres que não sejam dígitos
-        let value = input.value.replace(/\D/g, '');
-
-        // Formata o valor
-        if (value.length > 2) {
-            value = `(${value.substring(0, 2)}) ${value.substring(2, 7)}` + (value.length > 7 ? `-${value.substring(7, 11)}` : '');
-        } else if (value.length > 0) {
-            value = `(${value}`;
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
         }
+    
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+    
+        .form-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+    
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    
+        input:focus, select:focus, textarea:focus {
+            border-color: #007BFF;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+    
+        textarea {
+          
+            height: 100px;
+            resize: none;
+        }
+    
+        button, a {
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    
+        button {
+            background-color: #007BFF;
+            color: white;
+        }
+    
+        button:hover {
+            background-color: #0056b3;
+        }
+    
+        a {
+            display: inline-block;
+            text-align: center;
+            background-color: #6c757d;
+            color: white;
+        }
+    
+        a:hover {
+            background-color: #565e64;
+        }
+    
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+    
+    <script>
+        function formatPhoneNumber(input) {
+            // Remove todos os caracteres que não sejam dígitos
+            let value = input.value.replace(/\D/g, '');
 
-        input.value = value;
-    }
-</script>
+            // Formata o valor
+            if (value.length > 2) {
+                value = `(${value.substring(0, 2)}) ${value.substring(2, 7)}` + (value.length > 7 ? `-${value.substring(7, 11)}` : '');
+            } else if (value.length > 0) {
+                value = `(${value}`;
+            }
+
+            input.value = value;
+        }
+    </script>
+</head>
 <body>
     <h1>Cadastrar Animal</h1>
-    <form method="POST" action="{% url 'salvar_animal' %}">
-        {% csrf_token %}
-        <label for="nome">Nome do Animal:</label>
-        <input type="text" id="nome" name="nome" required><br><br>
+    <div class="form-container">
+        <form method="POST" action="{% url 'salvar_animal' %}">
+            {% csrf_token %}
+            <label for="nome">Nome do Animal:</label>
+            <input type="text" id="nome" name="nome" required>
 
-        <label for="numero">Número:</label>
-        <input type="text" id="numero" name="numero" required placeholder="Ex: (81) 99999-4215" 
-        title="Digite o número no formato (XX) XXXXX-XXXX" oninput="formatPhoneNumber(this)"><br><br>
+            <label for="numero">Número:</label>
+            <input type="text" id="numero" name="numero" required placeholder="Ex: (81) 99999-4215" 
+            title="Digite o número no formato (XX) XXXXX-XXXX" oninput="formatPhoneNumber(this)">
 
-        <label for="data_nascimento">Data de Nascimento:</label>
-        <input type="date" id="data_nascimento" name="data_nascimento" required><br><br>
+            <label for="data_nascimento">Data de Nascimento:</label>
+            <input type="date" id="data_nascimento" name="data_nascimento" required>
 
-        <label for="genero">Gênero:</label>
-        <select id="genero" name="genero" required>
-            <option value="Macho">Macho</option>
-            <option value="Fêmea">Fêmea</option>
-        </select><br><br>
+            <label for="genero">Gênero:</label>
+            <select id="genero" name="genero" required>
+                <option value="Macho">Macho</option>
+                <option value="Fêmea">Fêmea</option>
+            </select>
 
-        <label for="vacinas">Vacinas:</label>
-        <textarea id="vacinas" name="vacinas"></textarea><br><br>
+            <label for="vacinas">Vacinas:</label>
+            <textarea id="vacinas" name="vacinas" placeholder="Insira informações sobre as vacinas..."></textarea>
 
-        <button type="submit">Salvar</button>
-    </form>
+            <div class="button-container">
+                <a href="{% url 'ganho' %}">Voltar</a>
+                <button type="submit">Salvar</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

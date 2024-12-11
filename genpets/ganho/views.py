@@ -11,13 +11,15 @@ def cadastrar_animal_view(request):
 def salvar_animal_view(request):
     if request.method == 'POST':
         nome = request.POST['nome']
-        numero = request.POST['numero']
+        numero = request.POST['numero'].replace('(', '').replace(')', '').replace('-', '').replace(' ', '')  # Remove formatação
         data_nascimento = request.POST['data_nascimento']
         genero = request.POST['genero']
         vacinas = request.POST['vacinas']
+        
+        # Salvando os dados no banco
         Animal.objects.create(
             nome=nome,
-            numero=numero,
+            numero=int(numero),  # Certifica que o número é inteiro
             data_nascimento=data_nascimento,
             genero=genero,
             vacinas=vacinas

@@ -1,62 +1,162 @@
-    {% load static %}
-    <!DOCTYPE html>
-    <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Ganhos</title>
-    </head>
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganhos</title>
     <style>
-        h1{
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
             text-align: center;
+            margin-top: 20px;
+            color: #333;
         }
-        .navbar{
-        display: flex;
-        justify-content: center;
-        list-style-type: none;
-        gap: 20px;
-        padding: 0;
-        margin: 20px 0;
-        margin-top: 39px;
-        background-color: #d3e4d6;
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style-type: none;
+            gap: 20px;
+            padding: 10px 0;
+            background-color: #d3e4d6;
+            margin: 0;
         }
+
         .navbar li {
             display: inline-block;
         }
-        .navbar a{
+
+        .navbar a {
             text-decoration: none;
             font-size: 18px;
             color: black;
         }
-        .navbar a:hover{
+
+        .navbar a:hover {
             color: #007BFF;
         }
+
+        .add-button {
+            text-align: right;
+            margin: 20px;
+        }
+
+        .add-button a {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .add-button a:hover {
+            background-color: #0056b3;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .grid-item {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .grid-item h2 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .grid-item p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .text-container {
+            max-height: 60px; /* Define uma altura máxima */
+            overflow: hidden; /* Esconde o texto que ultrapassa */
+            position: relative;
+        }
+
+        .text-container.expanded {
+            max-height: none; /* Remove o limite de altura ao expandir */
+        }
+
+        .show-more {
+            display: block;
+            margin-top: 5px;
+            text-align: right;
+            font-size: 12px;
+            color: #007BFF;
+            cursor: pointer;
+        }
+
+        .show-more:hover {
+            text-decoration: underline;
+        }
+
+        .empty-message {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+        }
     </style>
-    <body>
-        <h1>Ganhos</h1>
-        <div class="navbar">
-            <li><a href="{% url 'user' %}">Home</a></li>
-            <li><a href="{% url 'ganho' %}">Ganho</a></li> <!-- Para cadastrar a compra de alguma coisa ou quanto foi o banho de algum pet -->
-            <li><a href="#">Faturamento</a></li> <!-- mostrar o faturamento mensal  -->
-            <li><a href="#">Pet</a></li> <!-- cadastrar os pets -->
-        </div>
-        <div style="text-align: right; margin: 10px;">
-            <a href="{% url 'cadastrar_animal' %}" style="padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Adicionar Novo</a>
-        </div>
-        <div>
-            {% for animal in animais %}
-                <div style="border: 1px solid #ccc; padding: 10px; margin: 10px;">
-                    <h2>{{ animal.nome }}</h2>
-                    <p><strong>Número:</strong> {{ animal.numero }}</p>
-                    <p><strong>Data de Nascimento:</strong> {{ animal.data_nascimento }}</p>
-                    <p><strong>Gênero:</strong> {{ animal.genero }}</p>
+</head>
+<body>
+    <h1>Ganhos</h1>
+    <ul class="navbar">
+        <li><a href="{% url 'user' %}">Home</a></li>
+        <li><a href="{% url 'ganho' %}">Pet</a></li>
+        <li><a href="#">Faturamento</a></li>
+        <li><a href="#">Ganho</a></li>
+    </ul>
+    <div class="add-button">
+        <a href="{% url 'cadastrar_animal' %}">Adicionar Novo</a>
+    </div>
+    <div class="grid-container">
+        {% for animal in animais %}
+            <div class="grid-item">
+                <h2>{{ animal.nome }}</h2>
+                <p><strong>Número:</strong> {{ animal.numero }}</p>
+                <p><strong>Data de Nascimento:</strong> {{ animal.data_nascimento }}</p>
+                <p><strong>Gênero:</strong> {{ animal.genero }}</p>
+                <div class="text-container">
                     <p><strong>Vacinas:</strong> {{ animal.vacinas }}</p>
                 </div>
-            {% empty %}
-                <p>Nenhum animal cadastrado ainda.</p>
-            {% endfor %}
-        </div>
-        
-    
-    </body>
-    </html>
+                <span class="show-more" onclick="toggleText(this)">Mostrar mais</span>
+            </div>
+        {% empty %}
+            <p class="empty-message">Nenhum animal cadastrado ainda.</p>
+        {% endfor %}
+    </div>
+    <script>
+        function toggleText(button) {
+            const container = button.previousElementSibling; // Seleciona a div anterior ao botão
+            container.classList.toggle('expanded'); // Alterna a classe expanded
+            button.textContent = container.classList.contains('expanded') ? 'Mostrar menos' : 'Mostrar mais';
+        }
+    </script>
+</body>
+</html>
