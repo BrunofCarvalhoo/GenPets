@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ganhos</title>
     <style>
-        /* Estilos mantidos iguais */
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
@@ -150,10 +149,41 @@
             font-size: 18px;
             color: #666;
         }
+        .actions {
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .edit-button, .delete-button {
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+    }
+
+    .edit-button {
+        background-color: #007BFF;
+    }
+
+    .edit-button:hover {
+        background-color: #0056b3;
+    }
+
+    .delete-button {
+        background-color: #FF4D4D;
+    }
+
+    .delete-button:hover {
+        background-color: #CC0000;
+    }
     </style>
 </head>
 <body>
-    <h1>Ganhos</h1>
+    <h1>Pets</h1>
     <ul class="navbar">
         <li><a href="{% url 'user' %}">Home</a></li>
         <li><a href="{% url 'ganho' %}">Pet</a></li>
@@ -180,6 +210,10 @@
                     <p><strong>Vacinas:</strong> {{ animal.vacinas }}</p>
                 </div>
                 <span class="show-more" onclick="toggleText(this)">Mostrar mais</span>
+                <div class="actions">
+                    <a href="{% url 'editar_animal' animal.id %}" class="edit-button">Editar</a>
+                    <a href="{% url 'deletar_animal' animal.id %}" class="delete-button" onclick="return confirm('Tem certeza que deseja excluir este animal?');">Deletar</a>
+                </div>
             </div>
         {% empty %}
             <p class="empty-message">Nenhum animal encontrado.</p>

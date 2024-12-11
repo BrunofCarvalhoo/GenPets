@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Animal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        input, textarea {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Editar Animal</h1>
+    <div class="form-container">
+        <form method="POST">
+            {% csrf_token %}
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" value="{{ animal.nome }}" required>
+
+            <label for="numero">Número</label>
+            <input type="text" id="numero" name="numero" value="{{ animal.numero }}" required>
+
+            <label for="data_nascimento">Data de Nascimento</label>
+            <input type="date" id="data_nascimento" name="data_nascimento" value="{{ animal.data_nascimento }}" required>
+
+            <label for="genero">Gênero</label>
+            <input type="text" id="genero" name="genero" value="{{ animal.genero }}" required>
+
+            <label for="vacinas">Vacinas</label>
+            <textarea id="vacinas" name="vacinas" rows="4">{{ animal.vacinas }}</textarea>
+
+            <button type="submit">Salvar Alterações</button>
+        </form>
+    </div>
+</body>
+</html>

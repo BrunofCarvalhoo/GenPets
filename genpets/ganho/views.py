@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Animal
 
 def ganho(request):
@@ -41,3 +41,22 @@ def salvar_animal_view(request):
     
     # Caso não seja um POST, redireciona para o formulário de cadastro
     return redirect('cadastrar_animal')
+
+def editar_animal(request, id):
+    animal = get_object_or_404(Animal, id=id)
+    if request.method == 'POST':
+        animal.nome = request.POST['nome']
+        animal.numero = request.POST['numero']
+        animal.data_nascimento = request.POST['data_nascimento']
+        animal.genero = request.POST['genero']
+        animal.vacinas = request.POST['vacinas']
+        animal.save()
+        return redirect('ganho')  # Redirecione para a página de listagem
+    return render(request, 'editar_animal.html', {'animal': animal})
+
+def deletar_animal(request, id):
+    animal = get_object_or_404(Animal, id=id)
+    if request.method == 'POST':
+        animal.delete()
+        return redirect('ganho')  # Redirecione para a página de listagem
+    return render(request, 'confirmar_exclusao.html', {'animal': animal})
