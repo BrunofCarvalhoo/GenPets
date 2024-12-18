@@ -4,9 +4,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Faturamento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            list-style-type: none;
+            gap: 20px;
+            padding: 10px 0;
+            background-color: #d3e4d6;
+            margin: 0;
+        }
+
+        .navbar li {
+            display: inline-block;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            font-size: 18px;
+            color: black;
+        }
+
+        .navbar a:hover {
+            color: #007BFF;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        button, a.button {
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover, a.button:hover {
+            background-color: #0056b3;
+        }
+
+        form select, button {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 10px;
+        }
+
+        .faturamento-box, .ganhos-animais {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .faturamento-box h2, .ganhos-animais h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .ganhos-animais table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .ganhos-animais th, .ganhos-animais td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .ganhos-animais th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .resumo-faturamento {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .resumo-faturamento div {
+            flex: 1;
+            margin: 10px;
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .resumo-faturamento h3 {
+            margin: 0;
+            color: #333;
+        }
+
+        .resumo-faturamento p {
+            font-size: 20px;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
 </head>
 <body>
-    <h1>oi</h1>
+    <h1>Faturamento</h1>
+
+    <!-- Navbar -->
+    <ul class="navbar">
+        <li><a href="{% url 'user' %}">Home</a></li>
+        <li><a href="{% url 'ganho' %}">Pet</a></li>
+        <li><a href="{% url 'faturamento' %}">Faturamento</a></li>
+        <li><a href="#">Ganho</a></li>
+    </ul>
+
+    <!-- Container -->
+    <div class="container">
+
+        <!-- Buttons -->
+        <div class="buttons">
+            <a href="{% url 'adicionar_ganho' %}" class="button">Adicionar Gasto</a>
+            <form method="GET" action="{% url 'faturamento' %}">
+                <label for="mes">Selecione o Mês:</label>
+                <select name="mes" id="mes" onchange="this.form.submit()">
+                    {% for key, mes_nome in meses.items %}
+                        <option value="{{ key }}" {% if mes_nome == mes_selecionado %}selected{% endif %}>
+                            {{ mes_nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <noscript><button type="submit">Filtrar</button></noscript>
+            </form>
+        </div>
+
+        <!-- Resumo do Faturamento -->
+        <div class="resumo-faturamento">
+            <div>
+                <h3>Faturamento Mensal Total</h3>
+                <p>R$ {{ total_faturamento }}</p>
+            </div>
+            <div>
+                <h3>Animais com Gastos</h3>
+                <p>{{ ganhos_animais|length }} animais</p>
+            </div>
+        </div>
+
+        <!-- Ganhos Detalhados por Animal -->
+        <div class="ganhos-animais">
+            <h2>Ganhos Detalhados por Animal</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Animal</th>
+                        <th>Valor (R$)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for animal, valor in ganhos_animais.items %}
+                        <tr>
+                            <td>{{ animal }}</td>
+                            <td>{{ valor }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">Nenhum gasto registrado para este mês.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 </body>
 </html>
