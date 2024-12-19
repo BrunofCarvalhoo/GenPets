@@ -1,0 +1,383 @@
+{% load static %}
+
+{% block 'head' %}
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="{% static 'appointment_calendar/css/calendar_page_styles.css' %}">
+  
+  <title>Calendário com Eventos</title>
+{% endblock 'head' %}
+<style>
+
+    /* Estilo para o conteúdo principal da app (sobrescreve o global) */
+  /* Estiliza o formulário e o campo de data */
+  main {
+      display:flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+  }
+  h1 {
+      text-align: center;
+      color: #333;
+  }
+
+  #datepicker {
+      display: block;
+      width: 350px; /* Ajuste o tamanho que deseja para o calendário */
+      margin: 0 auto; /* Centraliza o calendário */
+  }
+
+  .flatpickr-calendar {
+      max-width: 350px; /* Limita a largura */
+      margin: 20px auto; /* Centraliza com margens */
+  }
+
+  form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: inline-block;
+  }
+
+  label {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 10px;
+  }
+
+  input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      width: 250px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+  }
+
+  input[type="submit"] {
+      display: block;
+      margin: auto;
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+  }
+
+  input[type="submit"]:hover {
+      background-color: black;
+  }
+
+  /* Estiliza o calendário do Flatpickr */
+  .flatpickr-calendar {
+      font-size: 18px;
+      width: 350px; /* Aumenta a largura do calendário */
+      height: auto;
+  }
+
+  /* Estiliza os dias da semana e o cabeçalho do calendário */
+  .flatpickr-weekday {
+      font-weight: bold;
+  }
+
+  .flatpickr-current-month {
+      font-size: 22px;
+      font-weight: bold;
+  }
+
+  .flatpickr-prev, .flatpickr-next {
+      width: 20px; /* Ajuste o tamanho */
+      height: auto;
+      color: #333; /* Opcional: ajuste a cor */
+  }
+
+  .calendar-container {
+      width: 100%;
+      max-width: 500px; /* Ajuste este valor conforme o layout desejado */
+      margin: auto;
+  }
+
+  .calendar-navigation-arrow {
+      width: 30px; /* Ajuste o tamanho conforme necessário */
+      height: auto;
+  }
+
+  .flatpickr-innerContainer {
+      align-items: center;
+      justify-content: center;
+  }
+
+  /* Estilo da bolinha verde no calendário */
+  .event-marker {
+      width: 8px;
+      height: 8px;
+      background-color: green; /* Cor da bolinha indicando compromisso */
+      border-radius: 50%;
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+  }
+
+  .flatpickr-day {
+      position: relative; /* Necessário para a posição da bolinha */
+  }
+
+  /* Estilo para a seção de compromissos */
+  .commitment-info {
+      max-height: 400px;    /* Altura máxima ajustável */
+      overflow-y: auto;     /* Habilitar rolagem vertical */
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #f9f9f9;
+      display: block;       /* Evita conflitos com flexbox */
+      width: 390px;
+      margin-top: 28px;
+      box-sizing: border-box;
+  }
+
+  /* Estilo para cada compromisso */
+  .commitment-item {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+      word-wrap: break-word; /* Quebra de linha para textos longos */
+      background-color: #fff;
+      width: 100%;
+      box-sizing: border-box;
+  }
+
+  .commitment-item:last-child {
+      margin-bottom: 0;
+  }
+
+  /* Estilo para os botões */
+  .delete-button,
+  .edit-button {
+      display: block;
+      margin: 5px auto 0 auto;
+      padding: 5px 10px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+  }
+
+  .delete-button:hover,
+  .edit-button:hover {
+      background-color: #000000;
+  }
+  .navbar {
+            display: flex;
+            justify-content: center;
+            list-style-type: none;
+            gap: 20px;
+            padding: 10px 0;
+            background-color: #d3e4d6;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar li {
+            display: inline-block;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            font-size: 18px;
+            color: black;
+        }
+
+        .navbar a:hover {
+            color: #007BFF;
+        }
+
+</style>
+{% block 'body' %}
+<div>
+    <h1>Agenda</h1>
+    <div class="navbar">
+        <li><a href="{% url 'user' %}">Home</a></li>
+        <li><a href="{% url 'ganho' %}">Pet</a></li> <!-- Para cadastrar a compra de alguma coisa ou quanto foi o banho de algum pet -->
+        <li><a href="{% url 'faturamento' %}">Faturamento</a></li> <!-- mostrar o faturamento mensal  -->
+        <li><a href="{% url 'agenda' %}">Agenda</a></li> <!-- cadastrar os pets -->
+    </div>
+</div>
+<main>
+  <section>
+    <h1>Selecione uma Data</h1>
+    <form method="GET" action="{% url 'adicionar_compromisso' %}">
+        {% csrf_token %}
+        <label for="datepicker">Data:</label>
+        <input type="text" id="datepicker" name="date" required>
+        <input type="submit" value="Adicionar Compromisso" id="add-compromisso">
+    </form>
+  </section>
+  <section class="commitment-info" id="commitments">
+    <h1>Nenhum Compromisso</h1>
+  </section>
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+<meta name="csrf-token" content="{{ csrf_token }}">
+<script>
+    // Passa a lista de datas com compromissos do Django para o JS..
+    var datasComCompromissos = JSON.parse('{{ datas_com_compromissos|escapejs }}');
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const commitmentsDiv = document.querySelector("#commitments");
+    let selectedDateISO = null; // Variável global para armazenar a data selecionada
+
+    // Função para carregar compromissos de um dia específico
+    function loadCommitments(dateStr) {
+        fetch(`/agenda/get_commitments/?date=${dateStr}`)
+            .then(response => response.json())
+            .then(data => {
+                commitmentsDiv.innerHTML = '';  // Limpa a div de compromissos
+                if (data.compromissos && data.compromissos.length > 0) {
+                    renderCommitments(data.compromissos);
+                } else {
+                    commitmentsDiv.innerHTML = '<p>Nenhum evento para esse dia.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar compromissos:', error);
+                commitmentsDiv.innerHTML = '<p>Ocorreu um erro ao carregar os compromissos.</p>';
+            });
+    }
+
+    // Função para renderizar compromissos na interface
+    function renderCommitments(compromissos) {
+        compromissos.forEach(comp => {
+            const commitmentItem = document.createElement("div");
+            commitmentItem.className = 'commitment-item';  // Classe para estilizar
+            commitmentItem.innerHTML = `
+                <strong>${comp.processo}</strong><br>
+                <span>Local: ${comp.local}</span><br>
+                <span>Início: ${comp.hora_inicio}</span><br>
+                <span>Fim: ${comp.hora_fim}</span><br>
+                <p>${comp.observacoes}</p>
+                <button class="edit-button" data-id="${comp.id}">Editar</button>
+                <button class="delete-button" data-id="${comp.id}">Excluir</button>
+            `;
+            commitmentsDiv.appendChild(commitmentItem);
+        });
+
+        // Garante a rolagem vertical
+        commitmentsDiv.style.overflowY = 'auto';
+
+        // Adiciona evento de clique para cada botão de excluir
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const compId = this.getAttribute('data-id'); // Obtém o ID do compromisso
+                deleteCommitment(compId); // Chama a função para deletar o compromisso
+            });
+        });
+
+        // Adiciona evento de clique para cada botão de editar
+        document.querySelectorAll('.edit-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const compId = this.getAttribute('data-id'); // Obtém o ID do compromisso
+                // Redireciona para a página de edição
+                window.location.href = `/agenda/editar_compromisso/${compId}/`;
+            });
+        });
+    }
+
+    // Função para excluir um compromisso
+    function deleteCommitment(compId) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch(`/agenda/delete_commitment/${compId}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken  // Adiciona o token CSRF aqui
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Remove o compromisso da interface
+                const commitmentItem = document.querySelector(`.delete-button[data-id="${compId}"]`).parentElement;
+                commitmentItem.remove();
+
+                // Verifica se ainda há compromissos no dia
+                if (commitmentsDiv.children.length === 0) {
+                    commitmentsDiv.innerHTML = '<p>Nenhum evento para esse dia.</p>';
+
+                    // Remove a data da lista de datas com compromissos
+                    const selectedDate = selectedDateISO; // A data selecionada no formato 'YYYY-MM-DD'
+                    const index = datasComCompromissos.indexOf(selectedDate);
+                    if (index > -1) {
+                        datasComCompromissos.splice(index, 1);
+                    }
+
+                    // Remove a bolinha verde do calendário
+                    removeEventMarker(selectedDate);
+                }
+            } else {
+                return response.json().then(err => {
+                    console.error('Erro ao excluir o compromisso:', err.error);
+                    alert(`Erro: ${err.error}`);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao fazer a requisição para excluir o compromisso:', error);
+        });
+    }
+
+    // Função para remover o marcador de evento (bolinha verde) do calendário
+    function removeEventMarker(dateStr) {
+        // Encontra o elemento do dia correspondente
+        const dayElements = document.querySelectorAll('.flatpickr-day');
+        dayElements.forEach(dayElem => {
+            const dayDateStr = dayElem.dateObj.toISOString().split('T')[0];
+            if (dayDateStr === dateStr) {
+                // Remove o marcador de evento se existir
+                const eventMarker = dayElem.querySelector('.event-marker');
+                if (eventMarker) {
+                    eventMarker.remove();
+                }
+            }
+        });
+    }
+
+    // Configura o calendário flatpickr
+    const calendar = flatpickr("#datepicker", {
+        locale: "pt",              // Idioma para português
+        dateFormat: "d/m/Y",       // Formato da data
+        inline: true,              // Exibe o calendário inline (não em modal)
+        defaultDate: "today",      // Data padrão (hoje)
+        firstDayOfWeek: 1,         // Começa a semana na segunda-feira
+        onDayCreate: function(dObj, dStr, fp, dayElem) {
+            const dateStr = dayElem.dateObj.toISOString().split('T')[0];  // 'YYYY-MM-DD'
+
+            if (datasComCompromissos.includes(dateStr)) {
+                const eventMarker = document.createElement('div');
+                eventMarker.className = 'event-marker';  // Classe do marcador de evento
+                dayElem.appendChild(eventMarker);
+            }
+
+            // Adiciona o listener de clique no próprio dia
+            dayElem.addEventListener("click", function() {
+                selectedDateISO = dateStr; // Atualiza a data selecionada
+                loadCommitments(dateStr);  // Carrega compromissos quando o dia é clicado
+            });
+        }
+    });
+});
+
+</script>
+{% endblock 'body' %}

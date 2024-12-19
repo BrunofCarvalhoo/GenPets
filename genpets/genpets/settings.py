@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'user',
     'ganho',
     'faturamento',
+    'appointment_calendar',
 ]
 
 MIDDLEWARE = [
