@@ -1,6 +1,6 @@
 # Gerenciador de Petshop
 
-Este projeto tem como objetivo fornecer uma plataforma para gerenciar o cadastro de animais, controle de ganhos, faturamento mensal e uma agenda para organização de compromissos no petshop. Com uma interface intuitiva e funcionalidades específicas, o sistema permite que os usuários realizem as seguintes ações:
+Este projeto tem como objetivo fornecer uma plataforma para gerenciar o cadastro de animais, faturamento mensal e uma agenda para organização de compromissos no petshop. Com uma interface intuitiva e funcionalidades específicas, o sistema permite que os usuários realizem as seguintes ações:
 
 ## Funcionalidades
 
