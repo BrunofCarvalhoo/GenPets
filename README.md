@@ -25,6 +25,6 @@ A agenda permite visualizar, adicionar, editar e remover compromissos de forma p
 ## Tecnologias Utilizadas
 - Django
 - HTML/CSS
-- Banco de Dados (SQLite, PostgreSQL, etc.)
+- Banco de Dados 
 
 Este sistema foi desenvolvido para ser uma solução completa de gestão para petshops, facilitando o dia a dia da administração do negócio.
