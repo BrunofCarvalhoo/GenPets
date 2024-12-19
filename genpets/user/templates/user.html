@@ -49,6 +49,7 @@
             margin: 0 auto;
             padding: 20px;
         }
+
         .banner {
             text-align: center;
             margin-top: 20px;
@@ -76,6 +77,12 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .funcionalidade div:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .funcionalidade h3 {
@@ -87,7 +94,6 @@
             margin: 0;
             color: #555;
         }
-        
     </style>
 </head>
 <body>
